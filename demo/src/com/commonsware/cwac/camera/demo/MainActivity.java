@@ -132,15 +132,12 @@ public class MainActivity extends Activity implements
     findViewById(android.R.id.content).post(new Runnable() {
       @Override
       public void run() {
-        current.lockToLandscape(isLockedToLandscape);
-      }
-    });
-
-    findViewById(android.R.id.content).post(new Runnable() {
-        @Override
-        public void run() {
-            current.lockToPortrait(isLockedToPortrait);
+        if (isLockedToLandscape) {
+          current.lockToLandscape(isLockedToLandscape);
+        } else {
+          current.lockToPortrait(isLockedToPortrait);
         }
+      }
     });
 
     return(true);
@@ -170,13 +167,31 @@ public class MainActivity extends Activity implements
     }
     else if (item.getItemId() == R.id.landscape) {
       item.setChecked(!item.isChecked());
-      current.lockToLandscape(item.isChecked());
       isLockedToLandscape=item.isChecked();
+
+      if (isLockedToLandscape && isLockedToPortrait) {
+        // Undo any existing portrait lock first
+        current.lockToPortrait(false);
+
+        isLockedToPortrait=false;
+        invalidateOptionsMenu();
+      }
+
+      current.lockToLandscape(item.isChecked());
     }
     else if (item.getItemId() == R.id.portrait) {
       item.setChecked(!item.isChecked());
-      current.lockToPortrait(item.isChecked());
       isLockedToPortrait=item.isChecked();
+
+      if (isLockedToPortrait && isLockedToLandscape) {
+        // Undo any existing landscape lock first
+        current.lockToLandscape(false);
+
+        isLockedToLandscape=false;
+        invalidateOptionsMenu();
+      }
+
+      current.lockToPortrait(item.isChecked());
     }
     else if (item.getItemId() == R.id.fullscreen) {
       startActivity(new Intent(this, FullScreenActivity.class));

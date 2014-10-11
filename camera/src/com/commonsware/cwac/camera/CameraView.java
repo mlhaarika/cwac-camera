@@ -51,6 +51,8 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
   private boolean isDetectingFaces=false;
   private boolean isAutoFocusing=false;
   private int lastPictureOrientation=-1;
+  private boolean isLockedToLandscape=false;
+  private boolean isLockedToPortrait=false;
 
   public CameraView(Context context) {
     super(context);
@@ -256,7 +258,13 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
     return(displayOrientation);
   }
 
+  public boolean isLockedToLandscape() {
+    return isLockedToLandscape;
+  }
+
   public void lockToLandscape(boolean enable) {
+    isLockedToLandscape = enable;
+
     if (enable) {
       getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
       onOrientationChange.enable();
@@ -267,7 +275,13 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
     }
   }
 
+  public boolean isLockedToPortrait() {
+    return isLockedToPortrait;
+  }
+
   public void lockToPortrait(boolean enable) {
+    isLockedToPortrait = enable;
+
     if (enable) {
       getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
       onOrientationChange.enable();

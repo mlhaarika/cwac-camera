@@ -199,6 +199,10 @@ public class CameraFragment extends Fragment {
     return(cameraView.getDisplayOrientation());
   }
 
+  public boolean isLockedToLandscape() {
+    return cameraView.isLockedToLandscape();
+  }
+
   /**
    * Call this to lock the camera to landscape mode (with a
    * parameter of true), regardless of what the actual
@@ -210,6 +214,10 @@ public class CameraFragment extends Fragment {
    */
   public void lockToLandscape(boolean enable) {
     cameraView.lockToLandscape(enable);
+  }
+
+  public boolean isLockedToPortrait() {
+    return cameraView.isLockedToPortrait();
   }
 
   /**

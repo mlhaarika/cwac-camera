@@ -287,7 +287,13 @@ public class DemoCameraFragment extends CameraFragment implements
         });
 
         DisplayActivity.imageToShow=image;
-        startActivity(new Intent(getActivity(), DisplayActivity.class));
+        Intent intent = new Intent(getActivity(), DisplayActivity.class);
+        if (isLockedToLandscape()) {
+          intent.putExtra(DisplayActivity.EXTRA_LOCK_TO_LANDSCAPE, true);
+        } else if (isLockedToPortrait()) {
+          intent.putExtra(DisplayActivity.EXTRA_LOCK_TO_PORTRAIT, true);
+        }
+        startActivity(intent);
       }
       else {
         super.saveImage(xact, image);

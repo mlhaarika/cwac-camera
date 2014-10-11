@@ -1,6 +1,7 @@
 package com.commonsware.cwac.camera.demo;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -8,6 +9,11 @@ import android.widget.Toast;
 
 public class DisplayActivity extends Activity {
   static byte[] imageToShow=null;
+
+  static final String EXTRA_LOCK_TO_LANDSCAPE=
+          "com.commonsware.cwac.camera.demo.EXTRA_LOCK_TO_LANDSCAPE";
+  static final String EXTRA_LOCK_TO_PORTRAIT=
+          "com.commonsware.cwac.camera.demo.EXTRA_LOCK_TO_PORTRAIT";
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -18,6 +24,14 @@ public class DisplayActivity extends Activity {
       finish();
     }
     else {
+      Bundle extras = getIntent().getExtras();
+
+      if (extras.getBoolean(EXTRA_LOCK_TO_LANDSCAPE, false)) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+      } else if (extras.getBoolean(EXTRA_LOCK_TO_PORTRAIT, false)) {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+      }
+
       ImageView iv=new ImageView(this);
       BitmapFactory.Options opts=new BitmapFactory.Options();
 
