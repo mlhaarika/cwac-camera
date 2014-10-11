@@ -7,6 +7,7 @@
 	<string name="record">Record Video</string>
 	<string name="stop">Stop</string>
 	<string name="lock_to_landscape">Lock to Landscape</string>
+	<string name="lock_to_portrait">Lock to Portrait</string>
 	<string name="launch_camera_app">Launch Camera App</string>
 	<string name="take_picture">Take Picture</string>
 	<string name="auto_focus">Auto-focus</string>

@@ -213,6 +213,19 @@ public class CameraFragment extends Fragment {
   }
 
   /**
+   * Call this to lock the camera to portrait mode (with a
+   * parameter of true), regardless of what the actual
+   * screen orientation is.
+   *
+   * @param enable
+   *          true to lock the camera to portrait, false to
+   *          allow normal rotation
+   */
+  public void lockToPortrait(boolean enable) {
+    cameraView.lockToPortrait(enable);
+  }
+
+  /**
    * Call this to begin an auto-focus operation (e.g., in
    * response to the user tapping something to focus the
    * camera).

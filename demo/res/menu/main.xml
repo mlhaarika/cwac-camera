@@ -9,6 +9,13 @@
 		android:title="@string/lock_to_landscape">
 	</item>
 	<item
+		android:id="@+id/portrait"
+		android:checkable="true"
+		android:checked="false"
+		android:showAsAction="never"
+		android:title="@string/lock_to_portrait">
+	</item>
+	<item
 		android:id="@+id/content"
 		android:icon="@android:drawable/ic_menu_gallery"
 		android:showAsAction="never"

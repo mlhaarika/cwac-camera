@@ -36,6 +36,8 @@ public class MainActivity extends Activity implements
   private static final String STATE_SINGLE_SHOT="single_shot";
   private static final String STATE_LOCK_TO_LANDSCAPE=
       "lock_to_landscape";
+  private static final String STATE_LOCK_TO_PORTRAIT=
+      "lock_to_portrait";
   private static final int CONTENT_REQUEST=1337;
   private DemoCameraFragment std=null;
   private DemoCameraFragment ffc=null;
@@ -43,6 +45,7 @@ public class MainActivity extends Activity implements
   private boolean hasTwoCameras=(Camera.getNumberOfCameras() > 1);
   private boolean singleShot=false;
   private boolean isLockedToLandscape=false;
+  private boolean isLockedToPortrait=false;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +85,15 @@ public class MainActivity extends Activity implements
     setSingleShotMode(savedInstanceState.getBoolean(STATE_SINGLE_SHOT));
     isLockedToLandscape=
         savedInstanceState.getBoolean(STATE_LOCK_TO_LANDSCAPE);
+    isLockedToPortrait=
+        savedInstanceState.getBoolean(STATE_LOCK_TO_PORTRAIT);
 
     if (current != null) {
       current.lockToLandscape(isLockedToLandscape);
+    }
+
+    if (current != null) {
+      current.lockToPortrait(isLockedToPortrait);
     }
   }
 
@@ -97,6 +106,7 @@ public class MainActivity extends Activity implements
 
     outState.putBoolean(STATE_SINGLE_SHOT, isSingleShotMode());
     outState.putBoolean(STATE_LOCK_TO_LANDSCAPE, isLockedToLandscape);
+    outState.putBoolean(STATE_LOCK_TO_PORTRAIT, isLockedToPortrait);
   }
 
   @Override
@@ -126,6 +136,13 @@ public class MainActivity extends Activity implements
       }
     });
 
+    findViewById(android.R.id.content).post(new Runnable() {
+        @Override
+        public void run() {
+            current.lockToPortrait(isLockedToPortrait);
+        }
+    });
+
     return(true);
   }
 
@@ -134,6 +151,7 @@ public class MainActivity extends Activity implements
     new MenuInflater(this).inflate(R.menu.main, menu);
 
     menu.findItem(R.id.landscape).setChecked(isLockedToLandscape);
+    menu.findItem(R.id.portrait).setChecked(isLockedToPortrait);
 
     return(super.onCreateOptionsMenu(menu));
   }
@@ -154,6 +172,11 @@ public class MainActivity extends Activity implements
       item.setChecked(!item.isChecked());
       current.lockToLandscape(item.isChecked());
       isLockedToLandscape=item.isChecked();
+    }
+    else if (item.getItemId() == R.id.portrait) {
+      item.setChecked(!item.isChecked());
+      current.lockToPortrait(item.isChecked());
+      isLockedToPortrait=item.isChecked();
     }
     else if (item.getItemId() == R.id.fullscreen) {
       startActivity(new Intent(this, FullScreenActivity.class));
