@@ -134,11 +134,18 @@ public class ImageCleanupTask extends Thread {
     }
 
     if (xact.needByteArray) {
-      if (matrix != null) {
+      // If the user wants the image saved at a different JPEG quality, then ensure we recompress
+      // it here, even if the image didn't need to be rotated
+      if ((matrix != null) || (xact.jpegQuality != 100)) {
         ByteArrayOutputStream out=new ByteArrayOutputStream();
 
+        if (cleaned == null) {
+          cleaned=BitmapFactory.decodeByteArray(data, 0, data.length);
+        }
+
         // if (exif == null) {
-        cleaned.compress(Bitmap.CompressFormat.JPEG, 100, out);
+        Log.i("CWAC-Camera", "Compressing fixed up image to " + xact.jpegQuality + "% JPEG quality");
+        cleaned.compress(Bitmap.CompressFormat.JPEG, xact.jpegQuality, out);
         // }
         // else {
         // exif.deleteTag(ExifInterface.TAG_ORIENTATION);

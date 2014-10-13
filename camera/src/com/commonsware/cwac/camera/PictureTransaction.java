@@ -25,6 +25,7 @@ public class PictureTransaction implements Camera.ShutterCallback {
   boolean useSingleShotMode=false;
   int displayOrientation=0;
   String flashMode=null;
+  int jpegQuality=100;
   CameraView cameraView=null;
 
   public PictureTransaction(CameraHost host) {
@@ -75,6 +76,23 @@ public class PictureTransaction implements Camera.ShutterCallback {
 
   public PictureTransaction flashMode(String flashMode) {
     this.flashMode=flashMode;
+
+    return(this);
+  }
+
+  /**
+   * If the picture needs to be fixed up, then by default it is saved at 100% JPEG quality.  This
+   * optional parameter can be used to override that quality.  When this is set to a value other
+   * than 100, the image will *always* be compressed and saved at that quality (even if it would not
+   * have previously needed any manipulation).
+   *
+   * This option currently only applies when {@link #needByteArray(boolean)} is set.  It does not
+   * apply when using {@link #needBitmap(boolean)}.
+   *
+   * Valid values are 1-100.
+   */
+  public PictureTransaction jpegQuality(int jpegQuality) {
+    this.jpegQuality=jpegQuality;
 
     return(this);
   }
