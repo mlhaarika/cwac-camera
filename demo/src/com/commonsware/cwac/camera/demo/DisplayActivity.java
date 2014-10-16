@@ -19,17 +19,19 @@ public class DisplayActivity extends Activity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    if (imageToShow == null) {
+    if (imageToShow==null) {
       Toast.makeText(this, R.string.no_image, Toast.LENGTH_LONG).show();
       finish();
     }
     else {
       Bundle extras = getIntent().getExtras();
 
-      if (extras.getBoolean(EXTRA_LOCK_TO_LANDSCAPE, false)) {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-      } else if (extras.getBoolean(EXTRA_LOCK_TO_PORTRAIT, false)) {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+      if (extras!=null) {
+        if (extras.getBoolean(EXTRA_LOCK_TO_LANDSCAPE, false)) {
+          setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else if (extras.getBoolean(EXTRA_LOCK_TO_PORTRAIT, false)) {
+          setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
       }
 
       ImageView iv=new ImageView(this);
