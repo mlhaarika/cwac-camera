@@ -239,6 +239,12 @@ public class DemoCameraFragment extends CameraFragment implements
       xact.flashMode(flashMode);
     }
 
+    if (singleShotProcessing && (isLockedToLandscape() || isLockedToPortrait())) {
+        // When locking the preview screen in single shot mode, ensure the photo fills the entire
+        // screen when displaying the resulting photo
+        xact.lockCameraToPreviewOrientation(true);
+    }
+
     takePicture(xact);
   }
 
