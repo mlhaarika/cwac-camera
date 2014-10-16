@@ -26,6 +26,7 @@ public class PictureTransaction implements Camera.ShutterCallback {
   int displayOrientation=0;
   String flashMode=null;
   int jpegQuality=100;
+  boolean lockCameraToPreviewOrientation=false;
   CameraView cameraView=null;
 
   public PictureTransaction(CameraHost host) {
@@ -97,7 +98,18 @@ public class PictureTransaction implements Camera.ShutterCallback {
     return(this);
   }
 
-  PictureTransaction displayOrientation(int displayOrientation) {
+  /**
+   * When set to true, this optional parameter ensures that the camera saves photos in the same
+   * orientation that the camera preview is in.  This is useful when the preview screen is locked,
+   * e.g. using CameraView lockToPortrait or lockToLandscape.
+   */
+  public PictureTransaction lockCameraToPreviewOrientation(boolean lockCameraToPreviewOrientation) {
+    this.lockCameraToPreviewOrientation = lockCameraToPreviewOrientation;
+
+    return(this);
+  }
+
+  public PictureTransaction displayOrientation(int displayOrientation) {
     this.displayOrientation=displayOrientation;
 
     return(this);

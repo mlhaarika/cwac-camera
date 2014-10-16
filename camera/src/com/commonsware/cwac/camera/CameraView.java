@@ -50,7 +50,6 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
   private Camera.Parameters previewParams=null;
   private boolean isDetectingFaces=false;
   private boolean isAutoFocusing=false;
-  private int lastPictureOrientation=-1;
   private boolean isLockedToLandscape=false;
   private boolean isLockedToPortrait=false;
 
@@ -136,7 +135,6 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
 
     removeView(previewStrategy.getWidget());
     onOrientationChange.disable();
-    lastPictureOrientation=-1;
   }
 
   // based on CameraPreview.java from ApiDemos
@@ -326,7 +324,7 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
           pictureParams.setFlashMode(xact.flashMode);
         }
 
-        if (!onOrientationChange.isEnabled()) {
+        if (xact.lockCameraToPreviewOrientation || !onOrientationChange.isEnabled()) {
           setCameraPictureOrientation(pictureParams);
         }
 
@@ -635,10 +633,8 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
       outputOrientation=displayOrientation;
     }
 
-    if (lastPictureOrientation != outputOrientation) {
-      params.setRotation(outputOrientation);
-      lastPictureOrientation=outputOrientation;
-    }
+    Log.d("CWAC-Camera", "setCameraPictureOrientation - setRotation(" + outputOrientation + ")");
+    params.setRotation(outputOrientation);
   }
 
   // based on:
@@ -687,7 +683,6 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
 
           try {
             camera.setParameters(params);
-            lastPictureOrientation=outputOrientation;
           }
           catch (Exception e) {
             Log.e(getClass().getSimpleName(),
