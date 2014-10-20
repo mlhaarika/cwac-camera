@@ -16,6 +16,8 @@ package com.commonsware.cwac.camera;
 
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
+import android.util.Log;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -39,10 +41,13 @@ public class CameraUtils {
       targetRatio=(double)height / width;
     }
 
+    Log.d("CWAC-Camera", "getOptimalPreviewSize targetRatio=" + targetRatio);
+
     // Try to find an size match aspect ratio and size
 
     for (Size size : sizes) {
       double ratio=(double)size.width / size.height;
+      Log.d("CWAC-Camera", "getOptimalPreviewSize 1st pass size=" + size.width + "x" + size.height + " ratio=" + ratio);
 
       if (Math.abs(ratio - targetRatio) <= ASPECT_TOLERANCE) {
         if (Math.abs(size.height - targetHeight) < minDiff) {
@@ -59,12 +64,16 @@ public class CameraUtils {
       minDiff=Double.MAX_VALUE;
 
       for (Size size : sizes) {
+        Log.d("CWAC-Camera", "getOptimalPreviewSize 2nd pass size=" + size.width + "x" + size.height);
+
         if (Math.abs(size.height - targetHeight) < minDiff) {
           optimalSize=size;
           minDiff=Math.abs(size.height - targetHeight);
         }
       }
     }
+
+    Log.d("CWAC-Camera", "getOptimalPreviewSize optimalSize=" + optimalSize.width + "x" + optimalSize.height);
 
     return(optimalSize);
   }
@@ -90,6 +99,8 @@ public class CameraUtils {
       targetRatio=(double)height / width;
     }
 
+    Log.d("CWAC-Camera", "getBestAspectPreviewSize targetRatio=" + targetRatio);
+
     List<Size> sizes=parameters.getSupportedPreviewSizes();
 
     Collections.sort(sizes,
@@ -97,6 +108,7 @@ public class CameraUtils {
 
     for (Size size : sizes) {
       double ratio=(double)size.width / size.height;
+      Log.d("CWAC-Camera", "getBestAspectPreviewSize size=" + size.width + "x" + size.height + " ratio=" + ratio);
 
       if (Math.abs(ratio - targetRatio) < minDiff) {
         optimalSize=size;
@@ -107,6 +119,8 @@ public class CameraUtils {
         break;
       }
     }
+
+    Log.d("CWAC-Camera", "getBestAspectPreviewSize optimalSize=" + optimalSize.width + "x" + optimalSize.height);
 
     return(optimalSize);
   }
