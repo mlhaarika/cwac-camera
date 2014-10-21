@@ -134,16 +134,18 @@ public class CameraUtils {
                                                   Camera.Parameters parameters,
                                                   boolean enforceProfile) {
     Camera.Size result=null;
+    DeviceProfile deviceProfile=host.getDeviceProfile();
+
+    Log.d("CWAC-Camera", "deviceProfileMaxPictureSize=" + deviceProfile.getMaxPictureHeight() + "x" +
+              deviceProfile.getMinPictureHeight() + " enforceProfile=" + enforceProfile);
 
     for (Camera.Size size : parameters.getSupportedPictureSizes()) {
 
-      // android.util.Log.d("CWAC-Camera",
-      // String.format("%d x %d", size.width, size.height));
+      Log.d("CWAC-Camera", "getLargestPictureSize size=" + size.width + "x" + size.height);
 
       if (!enforceProfile
-          || (size.height <= host.getDeviceProfile()
-                                 .getMaxPictureHeight() && size.height >= host.getDeviceProfile()
-                                                                              .getMinPictureHeight())) {
+          || (size.height <= deviceProfile.getMaxPictureHeight() &&
+              size.height >= deviceProfile.getMinPictureHeight())) {
         if (result == null) {
           result=size;
         }
@@ -161,6 +163,8 @@ public class CameraUtils {
     if (result == null && enforceProfile) {
       result=getLargestPictureSize(host, parameters, false);
     }
+
+    Log.d("CWAC-Camera", "getLargestPictureSize chosenSize=" + result.width + "x" + result.height);
 
     return(result);
   }
