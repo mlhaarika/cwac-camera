@@ -203,6 +203,30 @@ public class CameraUtils {
     return(match);
   }
 
+  /**
+   * @return the best focus mode in the provided Camera.Parameters, based
+   * on a priority ordered list of focus modes (with the most desirable
+   * focus mode listed first).  If no matches are found then null is
+   * returned.
+   */
+  public static String findBestFocusModeMatch(Camera.Parameters params,
+                                              String... modes) {
+    String match=null;
+
+    List<String> flashModes=params.getSupportedFocusModes();
+
+    if (flashModes != null) {
+      for (String mode : modes) {
+        if (flashModes.contains(mode)) {
+          match=mode;
+          break;
+        }
+      }
+    }
+
+    return(match);
+  }
+
   private static class SizeComparator implements
       Comparator<Camera.Size> {
     @Override
