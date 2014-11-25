@@ -553,7 +553,16 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
   }
 
   private void startPreview() {
-    camera.startPreview();
+    try {
+      camera.startPreview();
+    } catch (Exception e){
+      Log.e(getClass().getSimpleName(),
+            "Exception starting preview",
+            e);
+      stopPreview();
+      getHost().onCameraFail(FailureReason.UNKNOWN);
+      return;
+    }
     inPreview=true;
     getHost().autoFocusAvailable();
   }
