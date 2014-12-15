@@ -29,6 +29,8 @@ abstract public class DeviceProfile {
 
   abstract public int getMaxPictureHeight();
 
+  abstract public int getMaxPreviewHeight();
+
   abstract public boolean doesZoomActuallyWork(boolean isFFC);
 
   abstract public int getDefaultOrientation();

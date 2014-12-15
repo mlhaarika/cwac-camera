@@ -31,11 +31,27 @@ public class CameraUtils {
                                                   int width,
                                                   int height,
                                                   Camera.Parameters parameters) {
+    return getOptimalPreviewSize(null, displayOrientation, width, height, parameters);
+  }
+
+  public static Camera.Size getOptimalPreviewSize(CameraHost host,
+                                                  int displayOrientation,
+                                                  int width,
+                                                  int height,
+                                                  Camera.Parameters parameters) {
+    DeviceProfile profile = null;
+    if (host != null && host.getDeviceProfile() != null) {
+      profile = host.getDeviceProfile();
+    }
     double targetRatio=(double)width / height;
     List<Camera.Size> sizes=parameters.getSupportedPreviewSizes();
     Camera.Size optimalSize=null;
     double minDiff=Double.MAX_VALUE;
     int targetHeight=height;
+
+    if (profile != null && targetHeight > profile.getMaxPreviewHeight()) {
+      targetHeight = profile.getMaxPreviewHeight();
+    }
 
     if (displayOrientation == 90 || displayOrientation == 270) {
       targetRatio=(double)height / width;

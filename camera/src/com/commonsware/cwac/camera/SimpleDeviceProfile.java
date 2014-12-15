@@ -27,6 +27,7 @@ public class SimpleDeviceProfile extends DeviceProfile {
   private boolean portraitFFCFlipped=false;
   private int minPictureHeight=0;
   private int maxPictureHeight=Integer.MAX_VALUE;
+  private int maxPreviewHeight=isSamsungS3() ? 720 : Integer.MAX_VALUE;
   private boolean doesZoomActuallyWork=true;
   private int defaultOrientation=-1;
   private boolean useDeviceOrientation=false;
@@ -107,6 +108,9 @@ public class SimpleDeviceProfile extends DeviceProfile {
         recordingHint=RecordingHint.VIDEO_ONLY;
       }
     }
+    else if ("maxPreviewHeight".equals(name)) {
+      maxPreviewHeight=Integer.parseInt(value);
+    }
   }
 
   @Override
@@ -127,6 +131,11 @@ public class SimpleDeviceProfile extends DeviceProfile {
   @Override
   public int getMaxPictureHeight() {
     return(maxPictureHeight);
+  }
+
+  @Override
+  public int getMaxPreviewHeight() {
+    return(maxPreviewHeight);
   }
 
   @Override
@@ -176,5 +185,9 @@ public class SimpleDeviceProfile extends DeviceProfile {
     public boolean doesZoomActuallyWork(boolean isFFC) {
       return(!isFFC);
     }
+  }
+
+  private boolean isSamsungS3() {
+    return(Build.MANUFACTURER.contains("samsung") && Build.PRODUCT.startsWith("d2"));
   }
 }
