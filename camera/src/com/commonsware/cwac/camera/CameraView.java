@@ -32,8 +32,10 @@ import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
-import java.io.IOException;
+
 import com.commonsware.cwac.camera.CameraHost.FailureReason;
+
+import java.io.IOException;
 
 public class CameraView extends ViewGroup implements AutoFocusCallback {
   static final String TAG="CWAC-Camera";
@@ -316,8 +318,9 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
         Camera.Size pictureSize=
             xact.host.getPictureSize(xact, pictureParams);
 
-        pictureParams.setPictureSize(pictureSize.width,
-                                     pictureSize.height);
+        /*pictureParams.setPictureSize(pictureSize.width,
+                                     pictureSize.height);*/
+        setPictureSizeBasedOnDevice(pictureParams);
         pictureParams.setPictureFormat(ImageFormat.JPEG);
 
         if (xact.flashMode != null) {
@@ -354,6 +357,16 @@ public class CameraView extends ViewGroup implements AutoFocusCallback {
       throw new IllegalStateException(
                                       "Preview mode must have started before you can take a picture");
     }
+  }
+
+  private void setPictureSizeBasedOnDevice(Camera.Parameters pictureParams){
+    if (Build.MANUFACTURER.toLowerCase().contains("samsung") && Build.PRODUCT.startsWith("d2")){
+      pictureParams.setPictureSize(1024, 768);
+    }
+    else{
+      pictureParams.setPictureSize(1280, 720);
+    }
+
   }
 
   public boolean isRecording() {
