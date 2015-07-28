@@ -25,7 +25,7 @@ public class PictureTransaction implements Camera.ShutterCallback {
   boolean useSingleShotMode=false;
   int displayOrientation=0;
   String flashMode=null;
-  int jpegQuality=100;
+  int jpegQuality=70;
   boolean lockCameraToPreviewOrientation=false;
   CameraView cameraView=null;
 
